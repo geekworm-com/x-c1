@@ -2,9 +2,9 @@
 #x-c1 Powering on /reboot /full shutdown through hardware
 #!/bin/bash
 
-    sudo sed -e '/shutdown/ s/^#*/#/' -i /etc/rc.local
+#sudo sed -e '/shutdown/ s/^#*/#/' -i /etc/rc.local
 
-    echo '#!/bin/bash
+echo '#!/bin/bash
 
 SHUTDOWN=4
 REBOOTPULSEMINIMUM=200
@@ -47,9 +47,9 @@ sudo sed -i '$ i /etc/x-c1pwr.sh &' /etc/rc.local
 #x-c1 full shutdown through Software
 #!/bin/bash
 
-    sudo sed -e '/button/ s/^#*/#/' -i /etc/rc.local
+#sudo sed -e '/button/ s/^#*/#/' -i /etc/rc.local
 
-    echo '#!/bin/bash
+echo '#!/bin/bash
 
 BUTTON=27
 
@@ -70,4 +70,6 @@ echo "Your device are are shutting down..."
 echo "0" > /sys/class/gpio/gpio$BUTTON/value
 ' > /usr/local/bin/x-c1softsd.sh
 sudo chmod +x /usr/local/bin/x-c1softsd.sh
+sudo echo "alias xoff='sudo x-c1softsd.sh'" >> /home/pi/.bashrc
+
 sudo systemctl enable pigpiod
