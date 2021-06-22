@@ -8,16 +8,23 @@ setup scripts for x-c1 adapter shield to get safe shutdown.
 ## User manual
 
 >git clone https://github.com/geekworm-com/x-c1
+
 >cd x-c1
+
 >sudo chmod +x x-c1.sh
+
 >sudo bash x-c1.sh
+
 >sudo reboot
+
 Test safe shutdown
+
 >xoff
+
 >#xoff is safe shutdown command, you can press button 3 seconds to safe shutdown, or long press 7-8 seconds to force shutdown.
 
-At this time, the fan is still not rotating, we need to continue to install the pwm fan control script
-We can manually run the following commands:
+At this time, the fan is still not rotating, we need to continue to install the pwm fan control script,We can manually run the following commands:
+
 >sudo python /home/pi/x-c1/x-c1_pwm_fan_control.py&
 
 But we hope that the script can be executed automatically when the Raspberry Pi board boots, we can use crontab system command to achieve it. please refer to the following:
