@@ -70,6 +70,6 @@ echo "Your device are are shutting down..."
 echo "0" > /sys/class/gpio/gpio$BUTTON/value
 ' > /usr/local/bin/x-c1softsd.sh
 sudo chmod +x /usr/local/bin/x-c1softsd.sh
-sudo echo "alias xoff='sudo x-c1softsd.sh'" >> /home/pi/.bashrc
-
 sudo systemctl enable pigpiod
+sudo echo "alias xoff='sudo x-c1softsd.sh'" >> /home/pi/.bashrc
+sudo echo "python /home/pi/x-c1/x-c1_pwm_fan_control.py&"  >> /home/pi/.bashrc

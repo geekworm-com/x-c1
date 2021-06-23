@@ -21,12 +21,9 @@ try:
                pwm.set_PWM_dutycycle(servo, 40)
 
           if(temp > 50):
-               pwm.set_PWM_dutycycle(servo, 50)
+               pwm.set_PWM_dutycycle(servo, 80)
 
           if(temp > 55):
-               pwm.set_PWM_dutycycle(servo, 75)
-
-          if(temp > 60):
                pwm.set_PWM_dutycycle(servo, 90)
 
           if(temp > 65):
@@ -38,5 +35,5 @@ try:
 
 
 except KeyboardInterrupt:
-    GPIO.cleanup() 
+    GPIO.cleanup()
 
