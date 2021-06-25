@@ -29,19 +29,10 @@ At this time, the fan is still not rotating, we need to continue to install the 
 
 But we hope that the script can be executed automatically when the Raspberry Pi board boots, we can use crontab system command to achieve it. please refer to the following:
 
->pi@raspberrypi ~ $  `sudo crontab -e`
-
- Choose "`1`" then press Enter
-
- Add a line at the end of the file that reads like this:
-
->`@reboot python /home/pi/x-c1/x-c1_pwm_fan_control.py`
 
 ## uninstall_x-c1.sh
 uninsatll x-c1 shell script, run the following command:
-> sudo ./uninstall_x-c1.sh
+> sudo ./uninstall.sh
 
 ## How to software turn off pi 4
 > xoff  # type this command will execute software shut down.
-
-

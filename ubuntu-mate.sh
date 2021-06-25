@@ -2,8 +2,9 @@
 #x-c1 Powering on /reboot /full shutdown through hardware
 #!/bin/bash
 
-#sudo sed -e '/shutdown/ s/^#*/#/' -i /etc/rc.local
-
+SYS_RUN_FILE=/etc/bash.bashrc
+# USER_RUN_FILE=/etc/bash.bashrc
+USER_RUN_FILE=${SYS_RUN_FILE}
 echo '#!/bin/bash
 
 SHUTDOWN=4
@@ -39,15 +40,12 @@ while [ 1 ]; do
       exit
     fi
   fi
-done' > /etc/x-c1pwr.sh
-sudo chmod +x /etc/x-c1pwr.sh
-sudo sed -i '$ i /etc/x-c1pwr.sh &' /etc/rc.local
-
+done' > /etc/profile.d/x-c1-pwr.sh
+sudo chmod +x /etc/profile.d/x-c1-pwr.sh
+#sudo sed -i '$ i /etc/x-c1-pwr.sh &' ${USER_RUN_FILE}
 
 #x-c1 full shutdown through Software
 #!/bin/bash
-
-#sudo sed -e '/button/ s/^#*/#/' -i /etc/rc.local
 
 echo '#!/bin/bash
 
@@ -64,15 +62,18 @@ if ! [[ $SLEEP =~ $re ]] ; then
    echo "error: sleep time not a number" >&2; exit 1
 fi
 
-echo "Your device are are shutting down..."
+echo "Your device will shutting down in 4 seconds..."
 /bin/sleep $SLEEP
 
 echo "0" > /sys/class/gpio/gpio$BUTTON/value
-' > /usr/local/bin/x-c1softsd.sh
-sudo chmod +x /usr/local/bin/x-c1softsd.sh
-sudo systemctl enable pigpiod
-sudo pigpiod
+' > /usr/local/bin/x-c1-softsd.sh
+sudo chmod +x /usr/local/bin/x-c1-softsd.sh
+#sudo systemctl enable pigpiod
+#sudo pigpiod
 
-sudo echo "alias xoff='sudo x-c1softsd.sh'" >> /home/admin/.bashrc
-sudo echo "sudo pigpiod"  >> /home/admin/.bashrc
-sudo echo "python /home/admin/x-c1/x-c1_pwm_fan_control.py&"  >> /home/admin/.bashrc
+sudo echo "alias xoff='sudo x-c1-softsd.sh'" >> ${SYS_RUN_FILE}
+sudo echo "sudo pigpiod"  >> ${SYS_RUN_FILE}
+
+#CUR_DIR=`pwd`
+CUR_DIR=$(pwd)
+sudo echo "python ${CUR_DIR}/fan.py&"  >> ${SYS_RUN_FILE}
