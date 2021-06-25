@@ -1,38 +1,58 @@
-This shell script and python file is tested only on Raspberry pi OS..
+User Guide: https://wiki.geekworm.com/X-C1_Software
 
-Guide: https://wiki.geekworm.com/X-C1_Software
+## For raspbian OS
+> install
+```
+cd ~
+sudo apt-get update
+sudo apt-get install python-smbus
+sudo apt-get install pigpio python-pigpio python3-pigpio
+git clone https://github.com/geekworm-com/x-c1
+cd x-c1
+sudo chmod +x *.sh
+sudo bash x-c1.sh
+sudo reboot
+```
+> Test safe shutdown
+```
+xoff
+xoff is safe shutdown command
+press button 1-2 seconds to reboot
+press button 3 seconds to safe shutdown,
+press 7-8 seconds to force shutdown.
+```
 
-## x-c1.sh
-setup scripts for x-c1 adapter shield to get safe shutdown.
+> uninstall
+```
+sudo ./uninstall.sh
+```
 
-## User manual
+## For ubuntu mate OS (test on ubuntu-mate-20.04.1-desktop)
+> install
+```
+cd ~
+sudo apt update
+sudo apt upgrade  #DON'T forget this step, or 'sudo pigpiod' is failed.
+sudo apt install -y unzip make gcc python git
+sudo apt install python-setuptools
 
->git clone https://github.com/geekworm-com/x-c1
+#install pigpio library, also refer to http://abyz.me.uk/rpi/pigpio/download.html
+wget https://github.com/joan2937/pigpio/archive/master.zip
+unzip master.zip
+cd pigpio-master
+sudo make
+sudo make install
 
->cd x-c1
+sudo apt install -y python-pigpio python3-pigpio
 
->sudo chmod +x x-c1.sh
-
->sudo bash x-c1.sh
-
->sudo reboot
-
-Test safe shutdown
-
->xoff
-
->#xoff is safe shutdown command, you can press button 3 seconds to safe shutdown, or long press 7-8 seconds to force shutdown.
-
-At this time, the fan is still not rotating, we need to continue to install the pwm fan control script,We can manually run the following commands:
-
->sudo python /home/pi/x-c1/x-c1_pwm_fan_control.py&
-
-But we hope that the script can be executed automatically when the Raspberry Pi board boots, we can use crontab system command to achieve it. please refer to the following:
-
-
-## uninstall_x-c1.sh
-uninsatll x-c1 shell script, run the following command:
-> sudo ./uninstall.sh
-
-## How to software turn off pi 4
-> xoff  # type this command will execute software shut down.
+cd ~
+git clone https://github.com/geekworm-com/x-c1
+cd x-c1
+sudo chmod +x *.sh
+sudo bash ubuntu-mate.sh
+sudo reboot
+```
+> uninstall
+```
+sudo ./uninstall_ubuntu.sh
+```
