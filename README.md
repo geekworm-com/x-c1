@@ -56,3 +56,19 @@ sudo reboot
 ```
 sudo ./uninstall_ubuntu.sh
 ```
+## For myNode
+> Install
+
+login to mynode teminal via Putty or Xsheel tool, the default user name is admin, password is bolt, then run the following command: or you can install app in mynode, setting/Applications/Manage/APPs, select 'Web SSH', then click 'install' button
+```
+ sudo apt-get update
+ sudo apt-get install python-smbus
+ sudo apt-get install pigpio python-pigpio
+ git clone https://github.com/geekworm-com/x-c1
+ cd x-c1
+ chmod +x *.sh
+ sudo bash mynode.sh
+ sudo pigpiod
+ python /home/admin/x-c1/fan.py&
+```
+> uninstall
