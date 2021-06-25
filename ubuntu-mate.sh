@@ -2,7 +2,7 @@
 #x-c1 Powering on /reboot /full shutdown through hardware
 #!/bin/bash
 
-SYS_RUN_FILE=/etc/bash.bashrc
+SYS_RUN_FILE=/etc/profile.d/naspi.sh
 # USER_RUN_FILE=/etc/bash.bashrc
 USER_RUN_FILE=${SYS_RUN_FILE}
 echo '#!/bin/bash
@@ -40,8 +40,8 @@ while [ 1 ]; do
       exit
     fi
   fi
-done' > /etc/profile.d/x-c1-pwr.sh
-sudo chmod +x /etc/profile.d/x-c1-pwr.sh
+done' > /etc/x-c1-pwr.sh
+sudo chmod +x /etc/x-c1-pwr.sh
 #sudo sed -i '$ i /etc/x-c1-pwr.sh &' ${USER_RUN_FILE}
 
 #x-c1 full shutdown through Software
@@ -69,7 +69,6 @@ echo "0" > /sys/class/gpio/gpio$BUTTON/value
 ' > /usr/local/bin/x-c1-softsd.sh
 sudo chmod +x /usr/local/bin/x-c1-softsd.sh
 #sudo systemctl enable pigpiod
-#sudo pigpiod
 
 sudo echo "alias xoff='sudo x-c1-softsd.sh'" >> ${SYS_RUN_FILE}
 sudo echo "sudo pigpiod"  >> ${SYS_RUN_FILE}
@@ -78,6 +77,10 @@ sudo echo "sudo pigpiod"  >> ${SYS_RUN_FILE}
 CUR_DIR=$(pwd)
 sudo echo "python ${CUR_DIR}/fan.py&"  >> ${SYS_RUN_FILE}
 
+sudo pigpiod
+python ${CUR_DIR}/fan.py&
+
+echo "The installation is complete."
 echo "Please run 'sudo reboot' to reboot the device."
 echo "NOTE:"
 echo "1. DON'T modify the name fold: $(basename ${CUR_DIR}), or the PWM fan will not work after reboot."

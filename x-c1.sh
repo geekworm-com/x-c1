@@ -76,6 +76,9 @@ CUR_DIR=$(pwd)
 sudo echo "alias xoff='sudo x-c1-softsd.sh'" >> ${USER_RUN_FILE}
 sudo echo "python ${CUR_DIR}/fan.py&"  >> ${USER_RUN_FILE}
 
+python ${CUR_DIR}/fan.py&
+
+echo "The installation is complete."
 echo "Please run 'sudo reboot' to reboot the device."
 echo "NOTE:"
 echo "1. DON'T modify the name fold: $(basename ${CUR_DIR}), or the PWM fan will not work after reboot."
