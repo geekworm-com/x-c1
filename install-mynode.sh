@@ -1,13 +1,6 @@
 #IMPORTANT! This script is only for the x-c1
 #x-c1 Powering on /reboot /full shutdown through hardware
 #!/bin/bash
-
-AUTO_RUN=/etc/profile.d/naspi.sh
-
-if [ -e $AUTO_RUN ]; then
-	sudo rm $AUTO_RUN -f
-fi
-
 echo '#!/bin/bash
 
 SHUTDOWN=4
@@ -20,7 +13,7 @@ echo "$BOOT" > /sys/class/gpio/export
 echo "out" > /sys/class/gpio/gpio$BOOT/direction
 echo "1" > /sys/class/gpio/gpio$BOOT/value
 
-echo "Your device are shutting down..."
+echo "Power management script is running..."
 
 while [ 1 ]; do
   shutdownSignal=$(cat /sys/class/gpio/gpio$SHUTDOWN/value)
@@ -45,7 +38,6 @@ while [ 1 ]; do
   fi
 done' > /etc/x-c1-pwr.sh
 sudo chmod +x /etc/x-c1-pwr.sh
-#sudo sed -i '$ i /etc/x-c1-pwr.sh &' ${AUTO_RUN}
 
 #x-c1 full shutdown through Software
 #!/bin/bash
@@ -71,19 +63,29 @@ echo "Your device will shutting down in 4 seconds..."
 echo "0" > /sys/class/gpio/gpio$BUTTON/value
 ' > /usr/local/bin/x-c1-softsd.sh
 sudo chmod +x /usr/local/bin/x-c1-softsd.sh
+
 sudo systemctl enable pigpiod
 
-sudo echo "alias xoff='sudo x-c1-softsd.sh'" >> ${AUTO_RUN}
-sudo echo "sudo pigpiod" >> ${AUTO_RUN}
-sudo echo "python $(pwd)/fan.py&"  >> ${AUTO_RUN}
+# save these shell to naspi.sh
+AUTO_RUN=/etc/rc.local
+SHELL_FILE=/etc/naspi.sh
 
-sudo chmod +x ${AUTO_RUN}
+sudo echo "/etc/x-c1-pwr.sh &" > ${SHELL_FILE}
+sudo echo "alias xoff='sudo x-c1-softsd.sh'" >> ${SHELL_FILE}
+sudo echo "sudo pigpiod" >> ${SHELL_FILE}
+sudo echo "python $(pwd)/fan.py&" >> ${SHELL_FILE}
+
+#auto run naspi.sh
+sudo chmod +x ${SHELL_FILE}
+sudo sed -i "$ i .${SHELL_FILE}" ${AUTO_RUN}
+
+# manual run
 sudo pigpiod
-python ${CUR_DIR}/fan.py&
+python $(pwd)/fan.py&
 
 echo "The installation is complete."
 echo "Please run 'sudo reboot' to reboot the device."
 echo "NOTE:"
 echo "1. DON'T modify the name fold: $(basename $(pwd)), or the PWM fan will not work after reboot."
 echo "2. fan.py is python file to control fan speed according temperature of CPU, you can modify it according your needs."
-echo "3. PWM fan needs a PWM signal to start working. If fan doesn't work in third-party OS afer reboot only remove the YELLOW wire to let the fan run immediately or contact us: info@geekworm.com."
+echo "3. PWM fan needs a PWM signal to start working. If fan doesn't work in third-party OS afer reboot only remove the YELLOW wire of fan to let the fan run immediately or contact us: info@geekworm.com."

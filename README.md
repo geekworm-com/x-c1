@@ -63,9 +63,10 @@ sudo reboot
 sudo ./uninstall-ubuntu.sh
 ```
 ## For myNode
+ About myNode refer to http://mynodebtc.com/
 > Install
 
-login to mynode teminal via Putty or Xsheel tool, the default user name is admin, password is bolt, then run the following command:
+login to mynode teminal via Putty or Xsheel tool, the default user name is `admin`, password is `bolt`, then run the following command:
 ```
  sudo apt-get update
  sudo apt-get install python-smbus
