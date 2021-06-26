@@ -114,6 +114,15 @@ login to mynode teminal via Putty or Xsheel tool, the default user name is `root
 The script is installed successfully and the fan starts to run
 ```
 
+> Test safe shutdown
+```
+xoff
+```
+- xoff is safe shutdown command
+- press button `1-2` seconds to reboot
+- press button `3` seconds to safe shutdown,
+- press `7-8` seconds to force shutdown.
+
 > uninstall
 ```
 sudo ./uninstall-dietPi.sh
