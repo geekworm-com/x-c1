@@ -1,26 +1,31 @@
 User Guide: https://wiki.geekworm.com/X-C1_Software
 
-## For raspbian OS
+## For Raspbian or RetroPie OS
+Test this script based on RetroPie 4.7.1 and Raspbian 2021-05-07-raspios-buster-armhf
 > install
 ```
 cd ~
 sudo apt-get update
-sudo apt-get install python-smbus
-sudo apt-get install pigpio python-pigpio python3-pigpio
+sudo apt-get install -y python-smbus
+sudo apt-get install -y pigpio python-pigpio python3-pigpio
 git clone https://github.com/geekworm-com/x-c1
 cd x-c1
 sudo chmod +x *.sh
-sudo bash x-c1.sh
+sudo bash install.sh
 sudo reboot
+```
+> PWM fan control
+```
+The script is installed successfully and the fan starts to run
 ```
 > Test safe shutdown
 ```
 xoff
-xoff is safe shutdown command
-press button 1-2 seconds to reboot
-press button 3 seconds to safe shutdown,
-press 7-8 seconds to force shutdown.
 ```
+- xoff is safe shutdown command
+- press button `1-2` seconds to reboot
+- press button `3` seconds to safe shutdown,
+- press `7-8` seconds to force shutdown.
 
 > uninstall
 ```

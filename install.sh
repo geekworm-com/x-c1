@@ -76,6 +76,7 @@ CUR_DIR=$(pwd)
 sudo echo "alias xoff='sudo x-c1-softsd.sh'" >> ${USER_RUN_FILE}
 sudo echo "python ${CUR_DIR}/fan.py&"  >> ${USER_RUN_FILE}
 
+sudo pigpiod
 python ${CUR_DIR}/fan.py&
 
 echo "The installation is complete."
