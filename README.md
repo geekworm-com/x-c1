@@ -101,8 +101,8 @@ sudo ./uninstall-mynode.sh
 login to mynode teminal via Putty or Xsheel tool, the default user name is `root`, password is `dietpi`, then run the following command:
 ```
  sudo apt-get update
- sudo apt-get install python-smbus
- sudo apt-get install pigpio python-pigpio
+ sudo apt-get install -y python-smbus git
+ sudo apt-get install -y pigpio python-pigpio
  git clone https://github.com/geekworm-com/x-c1
  cd x-c1
  chmod +x *.sh
