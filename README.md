@@ -33,6 +33,7 @@ sudo ./uninstall.sh
 ```
 
 ## For ubuntu mate OS (test on ubuntu-mate-20.04.1-desktop)
+Test this script based on ubuntu-mate-20.04.1-desktop and ubuntu server 21.04
 > install
 ```
 cd ~
@@ -54,12 +55,12 @@ cd ~
 git clone https://github.com/geekworm-com/x-c1
 cd x-c1
 sudo chmod +x *.sh
-sudo bash ubuntu-mate.sh
+sudo bash install-ubuntu.sh
 sudo reboot
 ```
 > uninstall
 ```
-sudo ./uninstall_ubuntu.sh
+sudo ./uninstall-ubuntu.sh
 ```
 ## For myNode
 > Install
