@@ -81,7 +81,7 @@ fi
 sudo echo '[Unit]
 Description=Daemon required to control GPIO pins via pigpio
 [Service]
-ExecStart=/usr/local/bin/pigpiod -l
+ExecStart=/usr/local/bin/pigpiod
 ExecStop=/bin/systemctl kill pigpiod
 Type=forking
 [Install]

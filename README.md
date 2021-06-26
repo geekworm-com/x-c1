@@ -73,8 +73,9 @@ login to mynode teminal via Putty or Xsheel tool, the default user name is admin
  git clone https://github.com/geekworm-com/x-c1
  cd x-c1
  chmod +x *.sh
- sudo bash mynode.sh
- sudo pigpiod
- python /home/admin/x-c1/fan.py&
+ sudo bash install-mynode.sh
 ```
 > uninstall
+```
+sudo ./uninstall-mynode.sh
+```
