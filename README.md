@@ -58,10 +58,12 @@ sudo chmod +x *.sh
 sudo bash install-ubuntu.sh
 sudo reboot
 ```
+
 > uninstall
 ```
 sudo ./uninstall-ubuntu.sh
 ```
+
 ## For myNode
  About myNode refer to http://mynodebtc.com/
 > Install
@@ -76,7 +78,48 @@ login to mynode teminal via Putty or Xsheel tool, the default user name is `admi
  chmod +x *.sh
  sudo bash install-mynode.sh
 ```
+> PWM fan control
+```
+The script is installed successfully and the fan starts to run
+```
+> Test safe shutdown
+```
+xoff
+```
+- xoff is safe shutdown command
+- press button `1-2` seconds to reboot
+- press button `3` seconds to safe shutdown,
+- press `7-8` seconds to force shutdown.
+
 > uninstall
 ```
 sudo ./uninstall-mynode.sh
 ```
+
+## For DietPi
+> Install
+login to mynode teminal via Putty or Xsheel tool, the default user name is `root`, password is `dietpi`, then run the following command:
+```
+ sudo apt-get update
+ sudo apt-get install python-smbus
+ sudo apt-get install pigpio python-pigpio
+ git clone https://github.com/geekworm-com/x-c1
+ cd x-c1
+ chmod +x *.sh
+ sudo bash install-dietPi.sh
+ ```
+
+ > PWM fan control
+```
+The script is installed successfully and the fan starts to run
+```
+
+> uninstall
+```
+sudo ./uninstall-dietPi.sh
+```
+
+## For Volumio
+> How to enable SSH
+visit http://volumio.local/dev/ url, then click 'ENABLE' button. The default user name is `volumio`, password is `volumio` via puTTY.
+
