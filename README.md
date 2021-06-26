@@ -65,7 +65,7 @@ sudo ./uninstall-ubuntu.sh
 ## For myNode
 > Install
 
-login to mynode teminal via Putty or Xsheel tool, the default user name is admin, password is bolt, then run the following command: or you can install app in mynode, setting/Applications/Manage/APPs, select 'Web SSH', then click 'install' button
+login to mynode teminal via Putty or Xsheel tool, the default user name is admin, password is bolt, then run the following command:
 ```
  sudo apt-get update
  sudo apt-get install python-smbus
