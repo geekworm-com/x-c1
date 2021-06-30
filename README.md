@@ -132,3 +132,5 @@ sudo ./uninstall-dietPi.sh
 > How to enable SSH
 visit http://volumio.local/dev/ url, then click 'ENABLE' button. The default user name is `volumio`, password is `volumio` via puTTY.
 
+## Stress test
+Please refer to https://github.com/geekworm-com/rpi-cpu-stress
