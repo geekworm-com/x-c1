@@ -2,12 +2,6 @@
 #x-c1 Powering on /reboot /full shutdown through hardware
 #!/bin/bash
 
-AUTO_RUN=/etc/profile.d/naspi.sh
-
-if [ -e $AUTO_RUN ]; then
-	sudo rm $AUTO_RUN -f
-fi
-
 echo '#!/bin/bash
 
 SHUTDOWN=4
@@ -69,7 +63,6 @@ echo "Your device will shutting down in 4 seconds..."
 echo "0" > /sys/class/gpio/gpio$BUTTON/value
 ' > /usr/local/bin/x-c1-softsd.sh
 sudo chmod +x /usr/local/bin/x-c1-softsd.sh
-sudo echo "alias xoff='sudo x-c1-softsd.sh'" >> ${AUTO_RUN}
 
 # create pigpiog service - begin
 SERVICE_NAME="/lib/systemd/system/pigpiod.service"
@@ -92,12 +85,24 @@ WantedBy=multi-user.target
 
 sudo systemctl enable pigpiod
 
-CUR_DIR=$(pwd)
-sudo echo "python ${CUR_DIR}/fan.py&"  >> ${AUTO_RUN}
+# save these shell to naspi.sh
+SHELL_FILE=/etc/profile.d/naspi.sh
 
-sudo chmod +x ${AUTO_RUN}
+if [ -e $SHELL_FILE ]; then
+	sudo rm $SHELL_FILE -f
+fi
+
+#sudo echo "/etc/x-c1-pwr.sh &" > ${SHELL_FILE}
+sudo echo "alias xoff='sudo /usr/local/bin/x-c1-softsd.sh'" >> ${SHELL_FILE}
+CUR_DIR=$(pwd)
+sudo echo "python ${CUR_DIR}/fan.py&"  >> ${SHELL_FILE}
+
+#auto run naspi.sh
 sudo pigpiod
-python ${CUR_DIR}/fan.py&
+sudo chmod +x ${SHELL_FILE}
+source ${SHELL_FILE}
+
+#python ${CUR_DIR}/fan.py&
 
 echo "The installation is complete."
 echo "Please run 'sudo reboot' to reboot the device."

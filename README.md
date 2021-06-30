@@ -40,7 +40,6 @@ cd ~
 sudo apt update
 sudo apt upgrade  #DON'T forget this step, or 'sudo pigpiod' is failed.
 sudo apt install -y unzip make gcc python git
-sudo apt install python-setuptools
 
 #install pigpio library, also refer to http://abyz.me.uk/rpi/pigpio/download.html
 wget https://github.com/joan2937/pigpio/archive/master.zip
@@ -49,7 +48,7 @@ cd pigpio-master
 sudo make
 sudo make install
 
-sudo apt install -y python-pigpio python3-pigpio
+sudo apt install -y python-pigpio python3-pigpio python-setuptools111
 
 cd ~
 git clone https://github.com/geekworm-com/x-c1
