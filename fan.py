@@ -19,12 +19,15 @@ while(1):
           pwm.set_PWM_dutycycle(servo, 40)
 
      if(temp > 50):
-          pwm.set_PWM_dutycycle(servo, 80)
+          pwm.set_PWM_dutycycle(servo, 50)
 
-     if(temp > 55):
-          pwm.set_PWM_dutycycle(servo, 90)
+     if(temp > 60):
+          pwm.set_PWM_dutycycle(servo, 60)
 
      if(temp > 65):
+          pwm.set_PWM_dutycycle(servo, 80)
+
+     if(temp > 75):
           pwm.set_PWM_dutycycle(servo, 100)
 
      if(temp < 30):
