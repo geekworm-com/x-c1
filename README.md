@@ -1,7 +1,9 @@
 User Guide: https://wiki.geekworm.com/X-C1_Software
 
-## For Raspbian or RetroPie OS
+## For Raspbian or RetroPie OS or OctoPi
 Test this script based on RetroPie 4.7.1 and Raspbian 2021-05-07-raspios-buster-armhf
+
+About OctoPi, please refer to https://github.com/guysoft/OctoPi,
 > install
 ```
 cd ~
