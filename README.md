@@ -135,7 +135,6 @@ Test this script based on Manjaro-ARM-kde-plasma-rpi4-21.07.img
 
 > install
 ```
-login via terminal
 cd ~
 sudo pacman -S gcc unzip make gcc python python-setuptools git
 sudo pacman -S python-setuptools
