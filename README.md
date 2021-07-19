@@ -128,7 +128,38 @@ xoff
 ```
 sudo ./uninstall-dietPi.sh
 ```
+## For Manjaro
+About Manjaro, please refer to https://manjaro.org/
 
+Test this script based on Manjaro-ARM-kde-plasma-rpi4-21.07.img
+
+> install
+```
+login via terminal
+cd ~
+sudo pacman -S gcc unzip make gcc python python-setuptools git
+sudo pacman -S python-setuptools
+
+#install pigpio library, also refer to http://abyz.me.uk/rpi/pigpio/download.html
+wget https://github.com/joan2937/pigpio/archive/master.zip
+unzip master.zip
+cd pigpio-master
+sudo make
+sudo make install
+sudo cp /usr/local/lib/libpigpio* /usr/lib/
+
+cd ~
+git clone https://github.com/geekworm-com/x-c1
+cd x-c1
+sudo chmod +x *.sh
+sudo bash install-manjaro.sh
+sudo reboot
+```
+
+> uninstall
+```
+sudo ./uninstall-manjaro.sh
+```
 ## For Volumio
 > How to enable SSH
 visit http://volumio.local/dev/ url, then click 'ENABLE' button. The default user name is `volumio`, password is `volumio` via puTTY.
