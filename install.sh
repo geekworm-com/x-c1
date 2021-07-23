@@ -71,11 +71,10 @@ echo "0" > /sys/class/gpio/gpio$BUTTON/value
 sudo chmod +x /usr/local/bin/x-c1-softsd.sh
 sudo systemctl enable pigpiod
 
-USER_RUN_FILE=/home/pi/.bashrc
 CUR_DIR=$(pwd)
-sudo echo "alias xoff='sudo x-c1-softsd.sh'" >> ${USER_RUN_FILE}
-sudo echo "python ${CUR_DIR}/fan.py&"  >> ${USER_RUN_FILE}
+sudo sed -i "$ i python ${CUR_DIR}/fan.py &" /etc/rc.local
 
+sudo echo "alias xoff='sudo x-c1-softsd.sh'" >> /home/pi/.bashrc
 sudo pigpiod
 python ${CUR_DIR}/fan.py&
 
