@@ -82,27 +82,43 @@ WantedBy=multi-user.target
 ' >> ${SERVICE_NAME}
 
 # create pigpiog service - begin
-
 sudo systemctl enable pigpiod
 
-# save these shell to naspi.sh
-SHELL_FILE=/etc/profile.d/naspi.sh
+CUR_DIR=$(pwd)
 
-if [ -e $SHELL_FILE ]; then
-	sudo rm $SHELL_FILE -f
+#####################################
+echo "#!/bin/bash
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+# Print the IP address
+_IP=$(hostname -I) || true
+if [ "$_IP" ]; then
+  printf "My IP address is %s\n" "$_IP"
 fi
 
-#sudo echo "/etc/x-c1-pwr.sh &" > ${SHELL_FILE}
-sudo echo "alias xoff='sudo /usr/local/bin/x-c1-softsd.sh'" >> ${SHELL_FILE}
-CUR_DIR=$(pwd)
-sudo echo "python ${CUR_DIR}/fan.py&"  >> ${SHELL_FILE}
+/etc/x-c1-pwr.sh &
+python ${CUR_DIR}/fan.py &
+exit 0
+" > /etc/rc.local
+sudo chmod +x /etc/rc.local
 
-#auto run naspi.sh
+#得到上一级目录
+#dname=$(dirname ${CUR_DIR})
+#echo "alias xoff='sudo /usr/local/bin/x-c1-softsd.sh'" >> ${dname}/.bashrc
+
 sudo pigpiod
-sudo chmod +x ${SHELL_FILE}
-source ${SHELL_FILE}
-
-#python ${CUR_DIR}/fan.py&
+python ${CUR_DIR}/fan.py&
 
 echo "The installation is complete."
 echo "Please run 'sudo reboot' to reboot the device."

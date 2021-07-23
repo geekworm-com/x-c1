@@ -24,7 +24,7 @@ The script is installed successfully and the fan starts to run
 ```
 xoff
 ```
-- xoff is safe shutdown command
+- xoff is software safe shutdown command
 - press button `1-2` seconds to reboot
 - press button `3` seconds to safe shutdown,
 - press `7-8` seconds to force shutdown.
@@ -57,8 +57,18 @@ git clone https://github.com/geekworm-com/x-c1
 cd x-c1
 sudo chmod +x *.sh
 sudo bash install-ubuntu.sh
+echo "alias xoff='sudo /usr/local/bin/x-c1-softsd.sh'" >> ~/.bashrc
 sudo reboot
 ```
+
+> Test safe shutdown
+```
+xoff
+```
+- xoff is software safe shutdown command
+- press button `1-2` seconds to reboot
+- press button `3` seconds to safe shutdown,
+- press `7-8` seconds to force shutdown.
 
 > uninstall
 ```
@@ -87,7 +97,7 @@ The script is installed successfully and the fan starts to run
 ```
 xoff
 ```
-- xoff is safe shutdown command
+- xoff is software safe shutdown command
 - press button `1-2` seconds to reboot
 - press button `3` seconds to safe shutdown,
 - press `7-8` seconds to force shutdown.
