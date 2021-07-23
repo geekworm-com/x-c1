@@ -64,23 +64,39 @@ echo "0" > /sys/class/gpio/gpio$BUTTON/value
 ' > /usr/local/bin/x-c1-softsd.sh
 sudo chmod +x /usr/local/bin/x-c1-softsd.sh
 
+CUR_DIR=$(pwd)
+
+#####################################
+echo "#!/bin/bash
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+# Print the IP address
+_IP=$(hostname -I) || true
+if [ "$_IP" ]; then
+  printf "My IP address is %s\n" "$_IP"
+fi
+
+/etc/x-c1-pwr.sh &
+python ${CUR_DIR}/fan.py &
+exit 0
+" > /etc/rc.local
+sudo chmod +x /etc/rc.local
 sudo systemctl enable pigpiod
-
-# save these shell to naspi.sh
-SHELL_FILE=/etc/profile.d/naspi.sh
-
-sudo echo "/etc/x-c1-pwr.sh &" > ${SHELL_FILE}
-sudo echo "alias xoff='sudo x-c1-softsd.sh'" >> ${SHELL_FILE}
-#sudo echo "sudo pigpiod" >> ${SHELL_FILE}
-sudo echo "python $(pwd)/fan.py&" >> ${SHELL_FILE}
-
-#auto run naspi.sh
-sudo chmod +x ${SHELL_FILE}
-.${SHELL_FILE}
 
 # manual run
 sudo pigpiod
-python $(pwd)/fan.py&
+python $(pwd)/fan.py &
 
 echo "The installation is complete."
 echo "Please run 'sudo reboot' to reboot the device."
