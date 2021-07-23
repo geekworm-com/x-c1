@@ -8,6 +8,8 @@ sudo sed -i '/pigpiod/d' ${AUTO_RUN}
 sudo sed -i '/x-c1/d' ${AUTO_RUN}
 sudo sed -i '/python/d' ${AUTO_RUN}
 
+sudo sed -i '/x-c1/d' ~/.bashrc
+
 sudo systemctl stop pigpiod
 sudo systemctl disable pigpiod
 
