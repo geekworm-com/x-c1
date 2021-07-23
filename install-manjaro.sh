@@ -66,43 +66,60 @@ sudo chmod +x /usr/local/bin/x-c1-softsd.sh
 
 # create pigpiog service - begin
 SERVICE_NAME="/lib/systemd/system/pigpiod.service"
-# Create service file on system.
 if [ -e $SERVICE_NAME ]; then
 	sudo rm $SERVICE_NAME -f
 fi
 
 sudo echo '[Unit]
 Description=Daemon required to control GPIO pins via pigpio
+
 [Service]
 ExecStart=/usr/local/bin/pigpiod -l
 ExecStop=/bin/systemctl kill pigpiod
 Type=forking
+
 [Install]
 WantedBy=multi-user.target
 ' >> ${SERVICE_NAME}
 
-# create pigpiog service - begin
-
-sudo systemctl enable pigpiod
-
-# save these shell to naspi.sh
-SHELL_FILE=/etc/profile.d/naspi.sh
-
-if [ -e $SHELL_FILE ]; then
-	sudo rm $SHELL_FILE -f
+RC_SERVICE_NAME="/lib/systemd/system/rc.local.service"
+if [ -e $RC_SERVICE_NAME ]; then
+	sudo rm $RC_SERVICE_NAME -f
 fi
+sudo echo '[Unit]
+Description=/etc/rc.local Compatibility
+Documentation=man:systemd-rc-local-generator(8)
+ConditionFileIsExecutable=/etc/rc.local
+After=network.target
 
-#sudo echo "/etc/x-c1-pwr.sh &" > ${SHELL_FILE}
-sudo echo "alias xoff='sudo /usr/local/bin/x-c1-softsd.sh'" >> ${SHELL_FILE}
+[Service]
+Type=forking
+ExecStart=/etc/rc.local start
+TimeoutSec=0
+RemainAfterExit=yes
+GuessMainPID=no
+
+[Install]
+WantedBy=multi-user.target
+' >> ${RC_SERVICE_NAME}
+
 CUR_DIR=$(pwd)
-sudo echo "python ${CUR_DIR}/fan.py&"  >> ${SHELL_FILE}
+
+#####################################
+echo "#!/bin/sh -e
+
+/etc/x-c1-pwr.sh &
+python ${CUR_DIR}/fan.py &
+exit 0
+" > /etc/rc.local
+
+sudo chmod +x /etc/rc.local
+sudo systemctl enable rc.local
+sudo systemctl enable pigpiod
 
 #auto run naspi.sh
 sudo pigpiod
-sudo chmod +x ${SHELL_FILE}
-source ${SHELL_FILE}
-
-#python ${CUR_DIR}/fan.py&
+python ${CUR_DIR}/fan.py &
 
 echo "The installation is complete."
 echo "Please run 'sudo reboot' to reboot the device."
