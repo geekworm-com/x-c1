@@ -22,9 +22,9 @@ while(1):
           pwm.set_PWM_dutycycle(servo, 50)
 
      if(temp > 60):
-          pwm.set_PWM_dutycycle(servo, 60)
+          pwm.set_PWM_dutycycle(servo, 70)
 
-     if(temp > 65):
+     if(temp > 70):
           pwm.set_PWM_dutycycle(servo, 80)
 
      if(temp > 75):
