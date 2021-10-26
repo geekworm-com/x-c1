@@ -1,8 +1,7 @@
-#IMPORTANT! This script is only for the x-c1
+#IMPORTANT! This script is only for the x-c1 on Raspberry Pi OS
 #x-c1 Powering on /reboot /full shutdown through hardware
 #!/bin/bash
 
-#sudo sed -e '/shutdown/ s/^#*/#/' -i /etc/rc.local
 echo '#!/bin/bash
 
 SHUTDOWN=4
@@ -46,8 +45,6 @@ sudo sed -i '$ i /etc/x-c1-pwr.sh &' /etc/rc.local
 #x-c1 full shutdown through Software
 #!/bin/bash
 
-#sudo sed -e '/button/ s/^#*/#/' -i /etc/rc.local
-
 echo '#!/bin/bash
 
 BUTTON=27
@@ -74,7 +71,7 @@ sudo systemctl enable pigpiod
 CUR_DIR=$(pwd)
 sudo sed -i "$ i python ${CUR_DIR}/fan.py &" /etc/rc.local
 
-sudo echo "alias xoff='sudo x-c1-softsd.sh'" >> /home/pi/.bashrc
+#sudo echo "alias xoff='sudo x-c1-softsd.sh'" >> /home/pi/.bashrc
 sudo pigpiod
 python ${CUR_DIR}/fan.py&
 
