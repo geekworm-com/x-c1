@@ -1,6 +1,8 @@
 #!/bin/bash
 #remove x-c1 old installtion
 sudo sed -i '/x-c1/d' /etc/rc.local
+sudo sed -i '/pigpiod/d' /etc/rc.local
+
 sudo sed -i '/x-c1/d' ~/.bashrc
 
 sudo rm /usr/local/bin/x-c1-softsd.sh -f
