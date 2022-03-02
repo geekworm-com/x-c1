@@ -94,7 +94,8 @@ WantedBy=multi-user.target
 CUR_DIR=$(pwd)
 
 #####################################
-
+cp ${CUR_DIR}/fan.py /usr/local/bin/
+chmod +x /usr/local/bin/fan.py
 cp ${CUR_DIR}/x-c1-fan.service /lib/systemd/system/
 cp ${CUR_DIR}/x-c1-pwr.service /lib/systemd/system/
 
