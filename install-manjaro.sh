@@ -4,17 +4,26 @@
 
 echo '#!/bin/bash
 
-SHUTDOWN=4
 REBOOTPULSEMINIMUM=200
 REBOOTPULSEMAXIMUM=600
-echo "$SHUTDOWN" > /sys/class/gpio/export
-echo "in" > /sys/class/gpio/gpio$SHUTDOWN/direction
-BOOT=17
-echo "$BOOT" > /sys/class/gpio/export
-echo "out" > /sys/class/gpio/gpio$BOOT/direction
-echo "1" > /sys/class/gpio/gpio$BOOT/value
 
-echo "Your device are shutting down..."
+SHUTDOWN=4
+if [ ! -d /sys/class/gpio/gpio$SHUTDOWN ]
+then
+  echo "$SHUTDOWN" > /sys/class/gpio/export
+  sleep 1 ;# Short delay while GPIO permissions are set up
+  echo "in" > /sys/class/gpio/gpio$SHUTDOWN/direction
+fi
+BOOT=17
+if [ ! -d /sys/class/gpio/gpio$BOOT ]
+then
+  echo "$BOOT" > /sys/class/gpio/export
+  sleep 1 ;# Short delay while GPIO permissions are set up
+  echo "out" > /sys/class/gpio/gpio$BOOT/direction
+  echo "1" > /sys/class/gpio/gpio$BOOT/value
+fi
+
+echo "Watching gpio for changes, to clean shutdown/reboot..."
 
 while [ 1 ]; do
   shutdownSignal=$(cat /sys/class/gpio/gpio$SHUTDOWN/value)
