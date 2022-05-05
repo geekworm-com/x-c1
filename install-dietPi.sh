@@ -88,7 +88,7 @@ if [ "$_IP" ]; then
 fi
 
 /etc/x-c1-pwr.sh &
-python ${CUR_DIR}/fan.py &
+python3 ${CUR_DIR}/fan.py &
 exit 0
 " > /etc/rc.local
 sudo chmod +x /etc/rc.local
@@ -96,7 +96,7 @@ sudo systemctl enable pigpiod
 
 # manual run
 sudo pigpiod
-python $(pwd)/fan.py &
+python3 $(pwd)/fan.py &
 
 echo "The installation is complete."
 echo "Please run 'sudo reboot' to reboot the device."
