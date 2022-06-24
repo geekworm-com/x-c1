@@ -1,0 +1,10 @@
+[Unit]
+Description=Run fan script xc-1
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/fan.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
