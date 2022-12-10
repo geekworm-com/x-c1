@@ -69,11 +69,11 @@ sudo chmod +x /usr/local/bin/x-c1-softsd.sh
 sudo systemctl enable pigpiod
 
 CUR_DIR=$(pwd)
-sudo sed -i "$ i python ${CUR_DIR}/fan.py &" /etc/rc.local
+sudo sed -i "$ i python3 ${CUR_DIR}/fan.py &" /etc/rc.local
 
 #sudo echo "alias xoff='sudo x-c1-softsd.sh'" >> /home/pi/.bashrc
 sudo pigpiod
-python ${CUR_DIR}/fan.py&
+python3 ${CUR_DIR}/fan.py&
 
 echo "The installation is complete."
 echo "Please run 'sudo reboot' to reboot the device."
