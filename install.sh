@@ -66,6 +66,8 @@ echo "Your device will shutting down in 4 seconds..."
 echo "0" > /sys/class/gpio/gpio$BUTTON/value
 ' > /usr/local/bin/x-c1-softsd.sh
 sudo chmod +x /usr/local/bin/x-c1-softsd.sh
+
+sed -i '/ExecStart/ s/$/  -n 127.0.0.1/' /lib/systemd/system/pigpiod.service
 sudo systemctl enable pigpiod
 
 CUR_DIR=$(pwd)
