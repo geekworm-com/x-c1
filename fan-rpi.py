@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# DON'T use pigpiod liberary on 2022.11.24
+# DON'T use pigpiod library on Nov. 24 2022 by Harry Huang
 #import pigpio
 import RPi.GPIO as IO
 import time

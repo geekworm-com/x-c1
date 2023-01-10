@@ -108,7 +108,7 @@ if [ "$_IP" ]; then
 fi
 
 /etc/x-c1-pwr.sh &
-python ${CUR_DIR}/fan.py &
+python3 ${CUR_DIR}/fan.py &
 exit 0
 " > /etc/rc.local
 sudo chmod +x /etc/rc.local
@@ -118,11 +118,11 @@ sudo chmod +x /etc/rc.local
 #echo "alias xoff='sudo /usr/local/bin/x-c1-softsd.sh'" >> ${dname}/.bashrc
 
 sudo pigpiod
-python ${CUR_DIR}/fan.py&
+python3 ${CUR_DIR}/fan.py&
 
 echo "The installation is complete."
 echo "Please run 'sudo reboot' to reboot the device."
 echo "NOTE:"
 echo "1. DON'T modify the name fold: $(basename ${CUR_DIR}), or the PWM fan will not work after reboot."
-echo "2. fan.py is python file to control fan speed according temperature of CPU, you can modify it according your needs."
-echo "3. PWM fan needs a PWM signal to start working. If fan doesn't work in third-party OS afer reboot only remove the YELLOW wire of fan to let the fan run immediately or contact us: info@geekworm.com."
+echo "2. fan.py is python file to control fan speed according temperature of CPU, you can modify it according your needs.The fan.py file uses the third-party pigpiod library, and fan-rpi.py only uses the gpio library of the Raspberry Pi. We will gradually abandon the use of the third-party pigpiod library"
+echo "3. PWM fan needs a PWM signal to start working. If fan doesn't work in third-party OS afer reboot only remove the FAN HS jumper of x-c1 shield to let the fan run immediately or contact us: info@geekworm.com."
