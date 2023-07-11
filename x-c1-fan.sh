@@ -6,7 +6,7 @@ PWM_CHANNEL=0
 PWM_HERTZ=2000
 PWM_CHIP_PATH=/sys/class/pwm/pwmchip0
 AUTO_CLEANUP=1 # If 1 then pwm channel is unexported on script exit, if 0 then its only stopped
-SLEEP_INTERVAL=30
+SLEEP_INTERVAL=5
 SHOW_DEBUG=0
 
 # Log debug info, only when SHOW_DEBUG=1 above
