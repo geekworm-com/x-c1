@@ -5,6 +5,7 @@
 PWM_CHANNEL=0
 PWM_HERTZ=2000
 PWM_CHIP_PATH=/sys/class/pwm/pwmchip0
+AUTO_CLEANUP=1 # If 1 then pwm channel is unexported on script exit, if 0 then its only stopped
 SLEEP_INTERVAL=30
 SHOW_DEBUG=0
 
@@ -85,8 +86,6 @@ function pwm_change_duty_cycle {
 
     logdebug "pwm_change_duty_cycle: $NEW_DUTY_CYCLE > $(pwm_get_channel_path "$CHANNEL" "duty_cycle")"
     echo "$NEW_DUTY_CYCLE" > "$(pwm_get_channel_path "$CHANNEL" "duty_cycle")"
-
-    CURRENT_DUTY_CYCLE="$NEW_DUTY_CYCLE"
 }
 
 # Change the pwm frequency
@@ -99,7 +98,12 @@ function pwm_change_frequency {
         return 1
     fi
 
-    pwm_change_duty_cycle "$CHANNEL" "$FREQUENCY" "0"
+    # See: https://stackoverflow.com/a/23050835/1895939
+    if [ "$CURRENT_DUTY_CYCLE" == -1 ]; then
+        CURRENT_DUTY_CYCLE=0
+    elif [ "$CURRENT_DUTY_CYCLE" -gt 0 ]; then
+        pwm_change_duty_cycle "$CHANNEL" "$FREQUENCY" "0"
+    fi
 
     PERIOD=$(frequency_to_period "$FREQUENCY")
 
@@ -107,6 +111,20 @@ function pwm_change_frequency {
     echo "$PERIOD" > "$(pwm_get_channel_path "$CHANNEL" "period")"
 
     pwm_change_duty_cycle "$CHANNEL" "$FREQUENCY" "$CURRENT_DUTY_CYCLE"
+}
+
+# Enable the pwm channel
+function pwm_start {
+    local CHANNEL="$1"
+    logdebug "echo 1 > $(pwm_get_channel_path "$CHANNEL" "enable")"
+    echo 1 > "$(pwm_get_channel_path "$CHANNEL" "enable")"
+}
+
+# Disable the pwm channel
+function pwm_stop {
+    local CHANNEL="$1"
+    logdebug "echo 0 > $(pwm_get_channel_path "$CHANNEL" "enable")"
+    echo 0 > "$(pwm_get_channel_path "$CHANNEL" "enable")"
 }
 
 # Validate & init the pwm
@@ -131,6 +149,7 @@ function pwm_init {
 
     pwm_create "$CHANNEL"
     pwm_change_frequency "$CHANNEL" "$FREQUENCY"
+    pwm_start "$CHANNEL"
 }
 
 # Unexport the pwm channel
@@ -143,47 +162,52 @@ function pwm_cleanup {
 
 # Get the raspberry pi temperature as float with 2 decimals
 function get_temp {
-    RAW_TEMP="$(cat /sys/class/thermal/thermal_zone0/temp)"
-    TEMP="$(awk -v temp="$RAW_TEMP" 'BEGIN { printf "%0.2f", temp / 1000; exit(0) }')"
-    echo "$TEMP"
+  RAW_TEMP="$(cat /sys/class/thermal/thermal_zone0/temp)"
+  TEMP="$(awk -v temp="$RAW_TEMP" 'BEGIN { printf "%0.2f", temp / 1000; exit(0) }')"
+  echo "$TEMP"
 }
 
 # Main method
 function __main__ {
+  if [ "$AUTO_CLEANUP" -eq 1 ]; then
     trap 'pwm_cleanup $PWM_CHANNEL' EXIT
+  else
+    trap 'pwm_stop $PWM_CHANNEL' EXIT
+  fi
 
-    pwm_init "$PWM_CHANNEL" "$PWM_HERTZ"
+  pwm_init "$PWM_CHANNEL" "$PWM_HERTZ"
 
-    while true; do
-        TEMP="$(get_temp)"
-        DUTY_CYCLE=0
+  while true; do
+    TEMP="$(get_temp)"
+    DUTY_CYCLE=0
 
-        printf -v CUR_TEMP %0.0f "$TEMP" # Convert float to int
-        if [ "$CUR_TEMP" -ge 75 ]; then
-            DUTY_CYCLE=100
-        elif [ "$CUR_TEMP" -ge 70 ]; then
-            DUTY_CYCLE=80
-        elif [ "$CUR_TEMP" -ge 60 ]; then
-            DUTY_CYCLE=70
-        elif [ "$CUR_TEMP" -ge 50 ]; then
-            DUTY_CYCLE=50
-        elif [ "$CUR_TEMP" -ge 40 ]; then
-            DUTY_CYCLE=45
-        elif [ "$CUR_TEMP" -ge 25 ]; then
-            DUTY_CYCLE=40
-        fi
+    printf -v CUR_TEMP %0.0f "$TEMP" # Convert float to int
+    if [ "$CUR_TEMP" -ge 75 ]; then
+      DUTY_CYCLE=100
+    elif [ "$CUR_TEMP" -ge 70 ]; then
+      DUTY_CYCLE=80
+    elif [ "$CUR_TEMP" -ge 60 ]; then
+      DUTY_CYCLE=70
+    elif [ "$CUR_TEMP" -ge 50 ]; then
+      DUTY_CYCLE=50
+    elif [ "$CUR_TEMP" -ge 40 ]; then
+      DUTY_CYCLE=45
+    elif [ "$CUR_TEMP" -ge 25 ]; then
+      DUTY_CYCLE=40
+    fi
 
-        if [ "$DUTY_CYCLE" != "$CURRENT_DUTY_CYCLE" ]; then
-            pwm_change_duty_cycle "$PWM_CHANNEL" "$PWM_HERTZ" "$DUTY_CYCLE"
-            CURRENT_DUTY_CYCLE="$DUTY_CYCLE"
+    if [ "$DUTY_CYCLE" != "$CURRENT_DUTY_CYCLE" ]; then
+      pwm_change_duty_cycle "$PWM_CHANNEL" "$PWM_HERTZ" "$DUTY_CYCLE"
+      CURRENT_DUTY_CYCLE="$DUTY_CYCLE"
 
-            echo "Fan speed change to $DUTY_CYCLE, temp is $TEMP"
-        fi
+      echo "Fan speed changed to $DUTY_CYCLE, temp is $TEMP"
+    fi
 
-        sleep "${SLEEP_INTERVAL:-5}"
-    done
+    sleep "${SLEEP_INTERVAL:-5}"
+  done
 }
 
 CURRENT_DUTY_CYCLE=-1
+
 __main__
 
