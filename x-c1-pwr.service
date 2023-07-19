@@ -1,0 +1,10 @@
+[Unit]
+Description=Run pwr daemon xc-1
+
+[Service]
+Type=simple
+ExecStart=/etc/x-c1-pwr.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
